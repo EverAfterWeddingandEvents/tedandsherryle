@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Ted &amp; Sherryle | October 28, 2026</title>
 <meta name="description" content="Ted Baterna and Sherryle Joy Abila are getting married — October 28, 2026 · Dipolog City."/>
 <meta name="theme-color" content="#1A2A44"/>
@@ -47,7 +47,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 body{
   font-family:var(--font-body);
   font-size:19px;
@@ -55,7 +55,8 @@ body{
   line-height:1.7;
   background:var(--ivory);
   color:var(--ink);
-  overflow-x:hidden;
+  overflow-x:hidden;overflow-x:clip;
+  -webkit-tap-highlight-color:transparent;
   -webkit-font-smoothing:antialiased;
   font-variant-numeric:lining-nums;
 }
@@ -87,11 +88,11 @@ a{color:inherit}
   100%{opacity:0;transform:translateY(100vh) rotate(360deg)}
 }
 .interactive-card{transition:transform .4s ease,box-shadow .4s ease}
-.interactive-card:hover{transform:translateY(-6px);box-shadow:0 16px 36px var(--shadow-n)}
+@media(hover:hover){.interactive-card:hover{transform:translateY(-6px);box-shadow:0 16px 36px var(--shadow-n)}}
 
 /* ── MUSIC PLAYER (hidden unless MUSIC_SRC is set) ── */
 #music-player{
-  position:fixed;bottom:1.25rem;right:1.25rem;z-index:950;
+  position:fixed;bottom:calc(1.25rem + env(safe-area-inset-bottom));right:calc(1.25rem + env(safe-area-inset-right));z-index:950;
   display:flex;align-items:center;gap:.6rem;
   background:var(--navy);border:1px solid rgba(200,183,166,.45);border-radius:50px;
   padding:.5rem 1rem .5rem .55rem;box-shadow:0 4px 20px rgba(17,28,48,.35);
@@ -112,7 +113,8 @@ a{color:inherit}
 #sticky-nav{
   position:fixed;top:0;left:0;right:0;z-index:900;
   background:rgba(26,42,68,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(200,183,166,.22);padding:0 1.25rem
+  border-bottom:1px solid rgba(200,183,166,.22);padding:0 max(1.25rem,env(safe-area-inset-right)) 0 max(1.25rem,env(safe-area-inset-left));
+  padding-top:env(safe-area-inset-top)
 }
 .nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:.6rem 0}
 .nav-desktop-links{display:flex;gap:.15rem;align-items:center}
@@ -123,8 +125,8 @@ a{color:inherit}
 }
 .nav-link:hover,.nav-link.active{color:var(--sand-light);background:rgba(200,183,166,.12)}
 .nav-brand{display:none;font-family:var(--font-display);font-size:1.5rem;color:var(--sand-light);line-height:1;text-decoration:none}
-.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.4rem;color:var(--sand-light);font-size:1.2rem;line-height:1}
-.nav-mobile-links{display:none;flex-direction:column;padding:.3rem 0 .8rem;border-top:1px solid rgba(200,183,166,.15)}
+.nav-hamburger{display:none;justify-content:center;min-width:44px;min-height:44px;margin-right:-.6rem;background:none;border:none;cursor:pointer;padding:.4rem;color:var(--sand-light);font-size:1.2rem;line-height:1}
+.nav-mobile-links{display:none;flex-direction:column;padding:.3rem 0 .8rem;max-height:calc(100svh - 60px);overflow-y:auto;overscroll-behavior:contain;border-top:1px solid rgba(200,183,166,.15)}
 .nav-mobile-links.open{display:flex}
 .nav-mobile-links .nav-link{font-size:.66rem;padding:.75rem .5rem;border-radius:0;text-align:center;border-bottom:1px solid rgba(200,183,166,.08)}
 .nav-mobile-links .nav-link:last-child{border-bottom:none}
@@ -149,98 +151,6 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
 .divider-ornament::before{background:linear-gradient(to left,var(--sand),transparent)}
 .divider-ornament::after{background:linear-gradient(to right,var(--sand),transparent)}
 .section-lede{max-width:600px;margin:0 auto;text-align:center;color:var(--ink-soft);font-size:1.08rem}
-
-/* ── ENVELOPE OVERLAY ── */
-#envelope-overlay{
-  position:fixed;inset:0;z-index:999999;background:var(--navy);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity 1.1s ease,visibility 1.1s ease;overflow:hidden
-}
-#envelope-overlay::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,183,166,.2) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 80% at 85% 100%,rgba(90,114,138,.28) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 50% at 10% 90%,rgba(184,155,106,.1) 0%,transparent 60%);
-}
-#envelope-overlay.gone{opacity:0;visibility:hidden;pointer-events:none}
-.env-petals{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.env-eyebrow{
-  position:relative;z-index:1;margin-bottom:2.2rem;
-  font-family:var(--font-caps);font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;
-  color:var(--sand-light);animation:fadeUp 1.2s ease both
-}
-.env-names{
-  position:relative;z-index:1;margin-top:4.2rem;text-align:center;
-  font-family:var(--font-display);font-size:2.2rem;color:var(--sand-light);line-height:1;
-  animation:fadeUp 1.2s .3s ease both
-}
-.env-date{
-  position:relative;z-index:1;margin-top:.7rem;
-  font-family:var(--font-caps);font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-light);
-  animation:fadeUp 1.2s .45s ease both
-}
-.envelope{
-  position:relative;z-index:1;width:320px;height:220px;cursor:pointer;
-  background:none;border:none;padding:0;font:inherit;transition:transform .3s ease
-}
-.envelope:hover{transform:translateY(-6px) scale(1.02)}
-.env-back{
-  position:absolute;inset:0;border-radius:4px;
-  background:linear-gradient(135deg,var(--dusty-light) 0%,var(--dusty) 100%);
-  box-shadow:0 22px 60px rgba(0,0,0,.5),0 0 0 1px rgba(200,183,166,.25)
-}
-.letter{
-  position:absolute;left:12px;right:12px;bottom:10px;height:185px;z-index:1;
-  background:var(--ivory);border-radius:3px;padding:1rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  box-shadow:0 2px 14px rgba(0,0,0,.14);
-  transition:transform .85s cubic-bezier(.25,1,.5,1)
-}
-.letter::before{content:'';position:absolute;inset:7px;border:1px solid var(--sand-light);border-radius:2px;pointer-events:none}
-.envelope.open .letter{transform:translateY(-118px)}
-.letter-monogram{font-family:var(--font-display);font-size:3rem;color:var(--dusty);line-height:1;margin-bottom:.3rem}
-.letter-rule{width:40px;height:1px;background:var(--gold);margin:.4rem auto}
-.letter-names{font-family:var(--font-serif);font-size:1rem;font-style:italic;color:var(--navy);line-height:1.3;margin-bottom:.25rem}
-.letter-date{font-family:var(--font-caps);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-muted)}
-/* pocket — four border triangles */
-.env-front{
-  position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:4px;
-  border-left:160px solid #647C94;
-  border-right:160px solid #647C94;
-  border-bottom:110px solid var(--dusty-deep);
-  border-top:110px solid transparent
-}
-.env-flap{
-  position:absolute;top:0;left:0;width:0;height:0;z-index:3;pointer-events:none;
-  border-left:160px solid transparent;
-  border-right:160px solid transparent;
-  border-top:115px solid #6D869D;
-  transform-origin:top center;
-  /* z-index drops mid-rotation so the rising letter passes in front of the flap */
-  transition:transform .65s cubic-bezier(.4,0,.2,1),z-index 0s .32s;
-  filter:drop-shadow(0 5px 6px rgba(0,0,0,.18))
-}
-.envelope.open .env-flap{transform:rotateX(180deg);z-index:0}
-.env-seal{
-  position:absolute;top:112px;left:50%;z-index:4;width:56px;height:56px;border-radius:50%;
-  transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle at 35% 30%,#E6D4AE 0%,var(--gold) 45%,#8E7447 100%);
-  box-shadow:inset 0 0 0 4px rgba(142,116,71,.35),inset 0 2px 6px rgba(255,255,255,.35),0 3px 10px rgba(0,0,0,.4);
-  font-family:var(--font-display);font-size:1.25rem;color:#5A4524;
-  text-shadow:0 1px 0 rgba(255,255,255,.35);
-  transition:opacity .3s ease,transform .3s ease
-}
-.env-seal::before{content:'';position:absolute;inset:-3px;border-radius:47% 53% 50% 50%/52% 48% 52% 48%;background:inherit;z-index:-1;filter:brightness(.92)}
-.envelope.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(1.5)}
-.env-hint{
-  position:absolute;bottom:-50px;left:0;width:100%;text-align:center;z-index:1;
-  font-family:var(--font-caps);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--sand-light);animation:envPulse 2s ease-in-out infinite
-}
-.envelope.open .env-hint{opacity:0}
-@keyframes envPulse{0%,100%{opacity:.95}50%{opacity:.3}}
 
 /* ── HERO ── */
 #hero{
@@ -524,9 +434,13 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   .palette-chip .chip{width:46px;height:46px}
   .palette-chip span{font-size:.5rem;letter-spacing:.12em;display:block;line-height:1.4}
   .two-col{grid-template-columns:1fr;gap:1.6rem}
+  /* principal sponsors stay paired side by side */
+  .sponsors-cols{grid-template-columns:1fr 1fr;gap:0 .9rem}
+  .sponsors-cols .ename{font-size:.9rem;line-height:1.35;padding:.45rem 0}
+  .sponsors-cols .col-head{font-size:1.3rem}
   .honor-grid{grid-template-columns:1fr}
   .schedule-list::before{left:82px}
-  .schedule-item{padding:1.3rem .25rem;gap:1rem}
+  .schedule-item{padding:1rem .25rem;gap:1rem}
   .countdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 1rem;max-width:320px}
   .countdown-dot{display:none}
   .countdown-box{min-width:0}
@@ -539,15 +453,35 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   .choice-row{grid-template-columns:1fr}
 }
 @media(max-width:400px){
-  .envelope{width:280px;height:190px}
-  .env-front{border-left-width:140px;border-right-width:140px;border-bottom-width:95px;border-top-width:95px}
-  .env-flap{border-left-width:140px;border-right-width:140px;border-top-width:100px}
-  .env-seal{top:98px;width:48px;height:48px;font-size:1.05rem}
-  .letter{height:160px}
-  .envelope.open .letter{transform:translateY(-104px)}
-  .letter-monogram{font-size:2.5rem}
+  .sponsors-cols{gap:0 .6rem}
+  .sponsors-cols .ename{font-size:.8rem;letter-spacing:-.005em}
   .monogram{width:160px;height:160px}
   .monogram span{font-size:3.3rem}
+}
+
+/* ── TOUCH / PHONE ── */
+@media(max-width:600px){
+  /* side-slide reveals start off-canvas and cause sideways wiggle on phones — slide up instead */
+  .js .reveal-left,.js .reveal-right{transform:translateY(28px)}
+  .js .reveal-left.reveal-active,.js .reveal-right.reveal-active{transform:none}
+  /* keep small caps legible */
+  .scroll-text,.fact-k,.palette-chip span{font-size:.64rem}
+  .countdown-unit,.etab,.dress-for,.vlabel,.field-label,.nav-mobile-links .nav-link{font-size:.68rem}
+  .palette-chip span{letter-spacing:.08em}
+  /* 44px touch targets */
+  .etab{min-height:44px;padding:.6rem 1rem}
+  .vlink{padding-block:1.1rem .6rem;min-height:44px}
+  .nav-brand{min-height:44px}
+  .choice span{padding:.9rem .6rem}
+  .rsvp-btn{min-height:52px}
+  footer{padding-bottom:calc(3rem + env(safe-area-inset-bottom))}
+}
+@media(hover:none){
+  .schedule-item:hover .sch-dot{background:var(--white);transform:none}
+  .motif-tile:hover img,.strip-frame:hover img{transform:none}
+  .palette-chip:hover .chip{transform:none}
+  .rsvp-btn:hover{transform:none}
+  #music-player:hover{transform:none}
 }
 
 /* ── REDUCED MOTION ── */
@@ -561,27 +495,6 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 </style>
 </head>
 <body>
-
-<!-- ══════════════ ENVELOPE OVERLAY ══════════════ -->
-<div id="envelope-overlay" role="dialog" aria-label="Wedding invitation envelope">
-  <div class="env-petals" id="env-petals" aria-hidden="true"></div>
-  <p class="env-eyebrow">You are cordially invited</p>
-  <button type="button" class="envelope" id="envelope-trigger" aria-label="Open the invitation">
-    <span class="env-back"></span>
-    <span class="letter">
-      <span class="letter-monogram">T &amp; S</span>
-      <span class="letter-rule"></span>
-      <span class="letter-names">Ted &amp; Sherryle Joy</span>
-      <span class="letter-date">October 28, 2026</span>
-    </span>
-    <span class="env-front"></span>
-    <span class="env-flap"></span>
-    <span class="env-seal" aria-hidden="true">T&amp;S</span>
-    <span class="env-hint">Tap to open</span>
-  </button>
-  <p class="env-names">Ted &amp; Sherryle</p>
-  <p class="env-date">10 · 28 · 2026</p>
-</div>
 
 <!-- ══════════════ MUSIC (shown only when MUSIC_SRC is set) ══════════════ -->
 <button type="button" id="music-player" class="hidden" aria-label="Play or pause music">
@@ -665,8 +578,8 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
       </div>
       <span class="sep"></span>
       <div>
-        <div class="fact-k">Time</div>
-        <div class="fact-v pending">Pending</div>
+        <div class="fact-k">Ceremony</div>
+        <div class="fact-v">2:00 PM</div>
       </div>
     </div>
     <p class="verse">“And now these three remain: faith, hope and love. But the greatest of these is love.”</p>
@@ -710,19 +623,51 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
     </div>
     <div class="schedule-list">
       <div class="schedule-item interactive-card reveal-left delay-1">
-        <div class="sch-time pending">Time<br>Pending</div>
+        <div class="sch-time">1:30 PM</div>
         <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
         <div>
-          <div class="sch-event"><i class="fas fa-church sch-icon" aria-hidden="true"></i>Holy Matrimony</div>
-          <div class="sch-desc">Cathedral Dipolog · Dipolog City</div>
+          <div class="sch-event"><i class="fas fa-door-open sch-icon" aria-hidden="true"></i>Guest Arrival</div>
+          <div class="sch-desc">Cathedral Dipolog</div>
         </div>
       </div>
       <div class="schedule-item interactive-card reveal-left delay-2">
-        <div class="sch-time pending">Time<br>Pending</div>
+        <div class="sch-time">2:00 PM</div>
         <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
         <div>
-          <div class="sch-event"><i class="fas fa-champagne-glasses sch-icon" aria-hidden="true"></i>Wedding Reception</div>
-          <div class="sch-desc">Ariana Hotel · Dipolog City</div>
+          <div class="sch-event"><i class="fas fa-church sch-icon" aria-hidden="true"></i>Holy Matrimony</div>
+          <div class="sch-desc">Cathedral Dipolog</div>
+        </div>
+      </div>
+      <div class="schedule-item interactive-card reveal-left delay-3">
+        <div class="sch-time">5:00 PM</div>
+        <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
+        <div>
+          <div class="sch-event"><i class="fas fa-champagne-glasses sch-icon" aria-hidden="true"></i>Cocktails</div>
+          <div class="sch-desc">Ariana Hotel</div>
+        </div>
+      </div>
+      <div class="schedule-item interactive-card reveal-left delay-4">
+        <div class="sch-time">5:30 PM</div>
+        <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
+        <div>
+          <div class="sch-event"><i class="fas fa-microphone-lines sch-icon" aria-hidden="true"></i>Programme</div>
+          <div class="sch-desc">Ariana Hotel</div>
+        </div>
+      </div>
+      <div class="schedule-item interactive-card reveal-left delay-5">
+        <div class="sch-time">6:30 PM</div>
+        <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
+        <div>
+          <div class="sch-event"><i class="fas fa-utensils sch-icon" aria-hidden="true"></i>Dinner</div>
+          <div class="sch-desc">Ariana Hotel</div>
+        </div>
+      </div>
+      <div class="schedule-item interactive-card reveal-left delay-5">
+        <div class="sch-time">8:00 PM</div>
+        <div class="sch-dot-wrap"><div class="sch-dot"></div></div>
+        <div>
+          <div class="sch-event"><i class="fas fa-music sch-icon" aria-hidden="true"></i>Party</div>
+          <div class="sch-desc">Ariana Hotel</div>
         </div>
       </div>
     </div>
@@ -747,7 +692,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
     <!-- Principal sponsors -->
     <div class="entourage-panel" role="tabpanel" id="p-sponsors" aria-labelledby="t-sponsors">
       <p class="group-label">Principal Sponsors</p>
-      <div class="two-col">
+      <div class="two-col sponsors-cols">
         <div>
           <div class="col-head">Ninongs</div>
           <div class="ename">Mr. Ryan Lester Albaño</div>
@@ -981,7 +926,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
         <div class="vinfo">
           <div class="vlabel">Ceremony</div>
           <h3 class="vname">Cathedral Dipolog</h3>
-          <p class="vtime">Time: <span class="pending">Pending</span></p>
+          <p class="vtime">Time: 2:00 PM</p>
           <p class="vaddress">Dipolog City, Zamboanga del Norte</p>
           <a class="vlink" href="https://www.google.com/maps/search/?api=1&amp;query=Our+Lady+of+the+Most+Holy+Rosary+Cathedral+Dipolog+City" target="_blank" rel="noopener"><span>Get directions →</span></a>
         </div>
@@ -993,7 +938,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
         <div class="vinfo">
           <div class="vlabel">Reception</div>
           <h3 class="vname">Ariana Hotel</h3>
-          <p class="vtime">Time: <span class="pending">Pending</span></p>
+          <p class="vtime">Time: 5:00 PM</p>
           <p class="vaddress">Dipolog City, Zamboanga del Norte</p>
           <a class="vlink" href="https://www.google.com/maps/search/?api=1&amp;query=Ariana+Hotel+Dipolog+City" target="_blank" rel="noopener"><span>Get directions →</span></a>
         </div>
@@ -1063,9 +1008,8 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 /* ══════════════════════════════════════════════════════════════
    CONFIG — per-couple values. See CONTENT.md.
    ══════════════════════════════════════════════════════════════ */
-/* Ceremony time is still pending — this counts to midnight PH time.
-   Change to e.g. '2026-10-28T14:00:00+08:00' once the time is confirmed. */
-var WEDDING_AT = '2026-10-28T00:00:00+08:00';
+/* Ceremony start, PH time. */
+var WEDDING_AT = '2026-10-28T14:00:00+08:00';
 
 /* Leave '' to hide the player. */
 var MUSIC_SRC = '';
@@ -1112,7 +1056,6 @@ function spawnPetals(wrap, count, colors){
   }
 }
 spawnPetals(document.getElementById('hero-petals'), 24, ['#C8B7A6', '#E4D9CD', '#F6F1EB', '#8FA3B6']);
-spawnPetals(document.getElementById('env-petals'), 18, ['rgba(200,183,166,.55)', 'rgba(246,241,235,.4)', 'rgba(143,163,182,.5)']);
 
 /* ── MUSIC ── */
 var audio = document.getElementById('bg-music');
@@ -1133,28 +1076,6 @@ if (MUSIC_SRC) {
   });
 }
 
-/* ── ENVELOPE ── */
-(function(){
-  var overlay = document.getElementById('envelope-overlay');
-  var envelope = document.getElementById('envelope-trigger');
-  var opened = false;
-  document.body.style.overflow = 'hidden';
-
-  envelope.addEventListener('click', function(){
-    if (opened) return;
-    opened = true;
-    envelope.classList.add('open');
-    /* the tap is the user gesture that unlocks autoplay */
-    if (MUSIC_SRC) audio.play().then(function(){ setPlaying(true); }).catch(function(){});
-    setTimeout(function(){
-      overlay.classList.add('gone');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }, REDUCED ? 150 : 1100);
-    setTimeout(function(){ overlay.remove(); }, 2400);
-  });
-})();
-
 /* ── NAV ── */
 (function(){
   var toggle = document.getElementById('nav-toggle');
@@ -1164,8 +1085,13 @@ if (MUSIC_SRC) {
     toggle.setAttribute('aria-expanded', open);
   });
   menu.addEventListener('click', function(e){
-    if (e.target.closest('a')) { menu.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+    if (e.target.closest('a')) closeMenu();
   });
+  function closeMenu(){ menu.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+  document.addEventListener('click', function(e){
+    if (menu.classList.contains('open') && !e.target.closest('#sticky-nav')) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
 
   var links = document.querySelectorAll('.nav-link');
   var spy = new IntersectionObserver(function(entries){

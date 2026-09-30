@@ -1,6 +1,6 @@
 # Content Checklist — Ted & Sherryle
 
-**Build: `index.html` — envelope invitation, "Elegant · Timeless · Romantic".** Based on
+**Build: `index.html` — "Elegant · Timeless · Romantic"** (entrance envelope removed). Based on
 `Weddings/samples/envelope/`. Anything not yet supplied reads **`Pending`** on the page or is
 hidden entirely — never a made-up value.
 
@@ -15,14 +15,13 @@ grep -n "Pending\|pending" index.html
 - Attire (principal sponsors + guests) and palette note — verbatim
 - Full entourage: principal sponsors, best man / MOH, groomsmen, bridesmaids, bearers,
   flower girls, candle / veil / cord sponsors, readers, psalmist, offerors
+- Order of the day — 1:30 PM arrival · 2:00 PM ceremony · 5:00 PM cocktails · 5:30 PM programme · 6:30 PM dinner · 8:00 PM party (countdown targets 2:00 PM)
 - Gift note — **Option 1** (the highlighted one)
 - **Wedding Motif** section — 5 arches cut from the Gemini dress-code illustration (`assets/img/arch-*.jpg`) + all 5 palette colours
 
 ## Still needed from the couple
 | Item | Where it goes | Current state |
 |---|---|---|
-| Ceremony time | invite facts, schedule, venue card, `WEDDING_AT` in JS | "Pending"; countdown targets midnight Oct 28 (PH) |
-| Reception time | schedule, venue card | "Pending" |
 | RSVP deadline | RSVP intro | "(date pending)" |
 | Parents of the bride & groom | entourage (add a block) | not shown |
 | Officiating priest | entourage (optional) | not shown |
