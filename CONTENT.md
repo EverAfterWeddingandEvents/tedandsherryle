@@ -45,6 +45,6 @@ Until then the form shows success but **saves nothing** (console warns).
 Max seats per reply is 2 (form + `CONFIG.MAX_SEATS`).
 
 ## Dress-code illustration
-Gemini illustration (`Gemini_Generated_Image_y5dpt3y5dpt3y5dp.jpeg`) is used **only** in the Wedding
+Gemini illustration (`image.jpeg`) is used **only** in the Wedding
 Motif arches (`assets/img/arch-*.jpg`). It was removed from the Dress Code section to avoid showing
 it twice. To regenerate the crops, see THEME.md → Motif section.
