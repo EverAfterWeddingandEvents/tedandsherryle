@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# local tooling
+.claude/settings.local.json
+
+# Camera originals — 9.6 MB, 2048px, archive only. The page runs entirely on the
+# web-sized crops in assets/img/. Keep these backed up somewhere; they are the
+# source for any future crop, but they do not belong in a repo that is served
+# as the website. See CONTENT.md §7.
+assets/photos/
