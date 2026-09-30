@@ -1035,7 +1035,7 @@ var PHOTOS = [
 ];
 
 /* Apps Script /exec URL from apps-script/Code.gs. '' = form succeeds locally, saves nothing. */
-var RSVP_ENDPOINT = '';
+var RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzS4uuo5ouhrLbicI52bLbGtTNX3s44_8gEDUjHFx4N7mKtcBNa6DjbTxC2pQr0wwrF/exec';
 
 var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1232,11 +1232,15 @@ if (MUSIC_SRC) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
     fetch(RSVP_ENDPOINT, { method: 'POST', body: new URLSearchParams(data) })
-      .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); })
-      .then(function(){ showSuccess(data); })
+      .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(res){
+        /* Apps Script reports rejections as 200 + { ok:false, message } */
+        if (!res || !res.ok) { var e = new Error((res && res.error) || 'rejected'); e.userMessage = res && res.message; throw e; }
+        showSuccess(data);
+      })
       .catch(function(err){
         console.error('[RSVP] submit failed', err);
-        formError.textContent = 'Sorry — that did not send. Please try again, or message us directly.';
+        formError.textContent = err.userMessage || 'Sorry — that did not send. Please try again, or message us directly.';
       })
       .then(function(){ submitBtn.disabled = false; submitBtn.innerHTML = BTN_LABEL; });
   });
