@@ -194,8 +194,9 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
     radial-gradient(ellipse 60% 80% at 85% 100%,rgba(90,114,138,.3) 0%,transparent 55%),
     linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%)
 }
-.hero-petals{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.petal{position:absolute;top:0;width:6px;height:6px;background:var(--sand);border-radius:50% 0 50% 0;opacity:0;animation:fall linear infinite}
+/* page-wide petals: fixed layer under the nav (900) and music bar (950), never catches taps */
+.page-petals{position:fixed;inset:0;z-index:800;pointer-events:none;overflow:hidden}
+.petal{position:absolute;top:-12px;will-change:transform,opacity;width:6px;height:6px;background:var(--sand);border-radius:50% 0 50% 0;opacity:0;animation:fall linear infinite}
 .hero-content{position:relative;z-index:2}
 .hero-eyebrow{
   font-family:var(--font-caps);font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;
@@ -536,6 +537,8 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 </head>
 <body>
 
+<div class="page-petals" id="page-petals" aria-hidden="true"></div>
+
 <!-- ══════════════ MUSIC BAR (shown once MUSIC_SRC loads) ══════════════ -->
 <button type="button" id="music-player" class="hidden" aria-label="Play our song" aria-pressed="false">
   <span class="play-btn" id="play-btn"><i class="fas fa-play" style="margin-left:2px" aria-hidden="true"></i></span>
@@ -584,7 +587,6 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 <!-- ══════════════ HERO ══════════════ -->
 <section id="hero">
   <div class="hero-bg"></div>
-  <div class="hero-petals" id="hero-petals" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">We are getting married</p>
     <div class="monogram" aria-hidden="true"><span>T&amp;S</span></div>
@@ -1134,7 +1136,8 @@ function spawnPetals(wrap, count, colors){
     wrap.appendChild(p);
   }
 }
-spawnPetals(document.getElementById('hero-petals'), 24, ['#C8B7A6', '#E4D9CD', '#F6F1EB', '#8FA3B6']);
+/* sand, dusty blue and muted gold read on both the navy and the ivory sections */
+spawnPetals(document.getElementById('page-petals'), window.innerWidth < 600 ? 16 : 26, ['#C8B7A6', '#8FA3B6', '#D4BC94', '#E4D9CD', '#A9B9C8']);
 
 /* ── MUSIC ── */
 (function(){
