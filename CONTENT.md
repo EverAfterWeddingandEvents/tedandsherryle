@@ -16,6 +16,7 @@ grep -n "Pending\|pending" index.html
 - Full entourage: principal sponsors, best man / MOH, groomsmen, bridesmaids, bearers,
   flower girls, candle / veil / cord sponsors, readers, psalmist, offerors
 - Order of the day — 1:30 PM arrival · 2:00 PM ceremony · 5:00 PM cocktails · 5:30 PM programme · 6:30 PM dinner · 8:00 PM party (countdown targets 2:00 PM)
+- **Baptism** of their daughter Thyrelle Loise — intro, gift guide, health protocol
 - Gift note — **Option 1** (the highlighted one)
 - **Wedding Motif** section — 5 arches cut from the Gemini dress-code illustration (`assets/img/arch-*.jpg`) + all 5 palette colours
 
@@ -26,7 +27,8 @@ grep -n "Pending\|pending" index.html
 | Parents of the bride & groom | entourage (add a block) | not shown |
 | Officiating priest | entourage (optional) | not shown |
 | Photos | `PHOTOS` array + `assets/photos/` | gallery hidden |
-| Music track | `MUSIC_SRC` / `MUSIC_TITLE` + `assets/music/` | player hidden |
+| Music file | `MUSIC_SRC` + `assets/music/` | title set to "I’ll Be" — Edwin McCain (violin instrumental); player hidden until the file is added |
+| Baptism date, time, church | `#baptism` facts | "Pending" |
 | Bible verse | invitation card | **placeholder** — 1 Cor 13:13, confirm or replace |
 | Hashtag, reminders (plus-ones, unplugged, etc.) | new sections if wanted | not shown |
 | Exact cathedral name / venue addresses | venue cards + map queries | map searches "Our Lady of the Most Holy Rosary Cathedral, Dipolog City" — **verify pin** |

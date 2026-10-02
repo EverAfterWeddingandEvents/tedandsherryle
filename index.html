@@ -104,24 +104,39 @@ a{color:inherit}
 .interactive-card{transition:transform .4s ease,box-shadow .4s ease}
 @media(hover:hover){.interactive-card:hover{transform:translateY(-6px);box-shadow:0 16px 36px var(--shadow-n)}}
 
-/* ── MUSIC PLAYER (hidden unless MUSIC_SRC is set) ── */
+/* ── MUSIC BAR (shown once MUSIC_SRC loads) ── */
 #music-player{
-  position:fixed;bottom:calc(1.25rem + env(safe-area-inset-bottom));right:calc(1.25rem + env(safe-area-inset-right));z-index:950;
-  display:flex;align-items:center;gap:.6rem;
-  background:var(--navy);border:1px solid rgba(200,183,166,.45);border-radius:50px;
-  padding:.5rem 1rem .5rem .55rem;box-shadow:0 4px 20px rgba(17,28,48,.35);
-  cursor:pointer;color:var(--white);font:inherit;transition:transform var(--t)
+  position:fixed;bottom:calc(1.1rem + env(safe-area-inset-bottom));right:calc(1.1rem + env(safe-area-inset-right));z-index:950;
+  display:flex;align-items:center;gap:.7rem;max-width:calc(100vw - 2.2rem);
+  background:rgba(26,42,68,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(200,183,166,.45);border-radius:50px;overflow:hidden;
+  padding:.45rem 1.1rem .45rem .45rem;box-shadow:0 6px 24px rgba(17,28,48,.35);
+  cursor:pointer;color:var(--white);font:inherit;text-align:left;
+  transition:transform var(--t),opacity .5s ease;animation:fadeUp .8s 1.2s ease both
 }
-#music-player:hover{transform:scale(1.04)}
-#music-player .play-btn{width:34px;height:34px;border-radius:50%;background:var(--sand);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:.8rem}
-.music-label{font-family:var(--font-caps);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sand-light);line-height:1.4;text-align:left}
-.music-title{font-family:var(--font-serif);font-size:.8rem;font-style:italic}
-.music-bars{display:flex;gap:2px;align-items:flex-end;height:14px}
-.music-bars span{width:2.5px;background:var(--sand);border-radius:2px;animation:bar 1s ease-in-out infinite}
-.music-bars span:nth-child(1){height:6px}.music-bars span:nth-child(2){height:10px;animation-delay:.2s}
-.music-bars span:nth-child(3){height:14px;animation-delay:.1s}.music-bars span:nth-child(4){height:8px;animation-delay:.3s}
-.music-bars.paused span{animation-play-state:paused}
+/* progress line along the bottom edge */
+#music-player::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:calc(var(--p,0) * 100%);background:var(--gold-light);opacity:.85;transition:width .5s linear}
+@media(hover:hover){#music-player:hover{transform:translateY(-2px)}}
+#music-player .play-btn{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--sand);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background var(--t)}
+#music-player.playing .play-btn{background:var(--gold-light)}
+.music-text{min-width:0;display:flex;flex-direction:column}
+.music-label{font-family:var(--font-caps);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sand-light);line-height:1.4}
+.music-title{font-family:var(--font-serif);font-size:.86rem;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.music-bars{flex-shrink:0;display:flex;gap:2px;align-items:flex-end;height:16px}
+.music-bars span{width:2.5px;background:var(--sand);border-radius:2px;transform-origin:bottom;animation:bar 1s ease-in-out infinite}
+.music-bars span:nth-child(1){height:7px}.music-bars span:nth-child(2){height:12px;animation-delay:.2s}
+.music-bars span:nth-child(3){height:16px;animation-delay:.1s}.music-bars span:nth-child(4){height:9px;animation-delay:.3s}
+.music-bars.paused span{animation-play-state:paused;transform:scaleY(.35)}
 @keyframes bar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+/* one-time nudge until the first tap */
+.music-hint{
+  position:fixed;bottom:calc(5rem + env(safe-area-inset-bottom));right:calc(1.1rem + env(safe-area-inset-right));z-index:950;
+  background:var(--ivory);color:var(--navy);border:1px solid var(--sand-light);border-radius:12px;
+  padding:.45rem .8rem;font-family:var(--font-caps);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:0 4px 16px rgba(17,28,48,.18);pointer-events:none;animation:fadeUp .8s 1.6s ease both;transition:opacity .4s ease
+}
+.music-hint::after{content:'';position:absolute;right:26px;bottom:-6px;width:10px;height:10px;background:var(--ivory);border-right:1px solid var(--sand-light);border-bottom:1px solid var(--sand-light);transform:rotate(45deg)}
+.music-hint.gone{opacity:0}
 
 /* ── NAV ── */
 #sticky-nav{
@@ -276,16 +291,8 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
 
 /* ── ENTOURAGE ── */
 #entourage{background:var(--white)}
-.entourage-tabs{display:flex;gap:.5rem;margin-top:2rem;flex-wrap:wrap;justify-content:center}
-.etab{
-  font-family:var(--font-caps);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
-  padding:.6rem 1.2rem;border-radius:30px;border:1px solid var(--dusty-light);color:var(--dusty-deep);
-  background:none;cursor:pointer;transition:all var(--t)
-}
-.etab:hover{border-color:var(--dusty);background:var(--dusty-pale)}
-.etab[aria-selected="true"]{background:var(--navy);color:var(--white);border-color:var(--navy)}
-.entourage-panel{margin-top:2.2rem;animation:fadeIn .4s ease}
-.entourage-panel[hidden]{display:none}
+.entourage-list{margin-top:1rem}
+.entourage-list > .group-label:first-child{margin-top:1.4rem}
 .group-label{
   font-family:var(--font-caps);font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dusty-deep);
   display:flex;align-items:center;justify-content:center;gap:1rem;margin:2.2rem 0 1rem;text-align:center
@@ -381,6 +388,23 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
 .vlink:hover{color:var(--navy)}
 
 /* ── RSVP ── */
+/* ── BAPTISM ── */
+#baptism{background:var(--dusty-pale)}
+.bap-card{max-width:640px;margin:2.4rem auto 0;background:var(--white);border:1px solid var(--sand-light);border-radius:22px;padding:2.6rem 2rem;text-align:center;position:relative}
+.bap-card::before{content:'';position:absolute;inset:10px;border:1px solid var(--dusty-pale);border-radius:16px;pointer-events:none}
+.bap-intro{font-style:italic;color:var(--ink-soft);font-size:1.12rem;max-width:480px;margin:0 auto}
+.bap-lead{margin-top:1.2rem;font-family:var(--font-caps);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--dusty-deep)}
+.bap-name{font-family:var(--font-display);font-size:clamp(2.6rem,9vw,3.6rem);color:var(--navy);line-height:1.15;margin:.4rem 0 .2rem}
+.bap-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--sand-light)}
+.bap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;max-width:820px;margin:1.6rem auto 0}
+.bap-box{background:var(--white);border:1px solid var(--sand-light);border-radius:18px;padding:1.8rem 1.6rem;text-align:center}
+.bap-box h3{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:1.45rem;color:var(--navy);margin-bottom:.9rem}
+.bap-box h3 i{color:var(--gold);font-size:1rem;margin-right:.4rem}
+.bap-list{list-style:none;text-align:left;display:inline-block}
+.bap-list li{position:relative;padding:.3rem 0 .3rem 1.4rem;color:var(--navy);font-size:1.02rem;line-height:1.5}
+.bap-list li::before{content:'✦';position:absolute;left:0;top:.4rem;color:var(--gold);font-size:.7rem}
+.bap-note{margin-top:1rem;font-style:italic;color:var(--ink-soft);font-size:.98rem;line-height:1.55}
+
 #rsvp{background:var(--white)}
 .rsvp-wrap{max-width:560px;margin:2.2rem auto 0;background:var(--ivory);border:1px solid var(--sand-light);border-radius:22px;padding:2.6rem 2.2rem;box-shadow:0 8px 30px rgba(26,42,68,.06)}
 .rsvp-desc{text-align:center;color:var(--ink-soft);margin-bottom:1.8rem}
@@ -448,6 +472,9 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   .palette-chip .chip{width:46px;height:46px}
   .palette-chip span{font-size:.5rem;letter-spacing:.12em;display:block;line-height:1.4}
   .two-col{grid-template-columns:1fr;gap:1.6rem}
+  .bap-grid{grid-template-columns:1fr}
+  .bap-card{padding:2.4rem 1.3rem}
+  .bap-facts{gap:.5rem}
   /* principal sponsors stay paired side by side */
   .sponsors-cols{grid-template-columns:1fr 1fr;gap:0 .9rem}
   .sponsors-cols .ename{font-size:.9rem;line-height:1.35;padding:.45rem 0}
@@ -479,23 +506,22 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   .js .reveal-left,.js .reveal-right{transform:translateY(28px)}
   .js .reveal-left.reveal-active,.js .reveal-right.reveal-active{transform:none}
   /* keep small caps legible */
-  .scroll-text,.fact-k,.palette-chip span{font-size:.64rem}
-  .countdown-unit,.etab,.dress-for,.vlabel,.field-label,.nav-mobile-links .nav-link{font-size:.68rem}
+  .scroll-text,.fact-k,.palette-chip span,.honor-role{font-size:.64rem}
+  .countdown-unit,.dress-for,.vlabel,.field-label,.nav-mobile-links .nav-link{font-size:.68rem}
   .palette-chip span{letter-spacing:.08em}
   /* 44px touch targets */
-  .etab{min-height:44px;padding:.6rem 1rem}
   .vlink{padding-block:1.1rem .6rem;min-height:44px}
   .nav-brand{min-height:44px}
   .choice span{padding:.9rem .6rem}
   .rsvp-btn{min-height:52px}
-  footer{padding-bottom:calc(3rem + env(safe-area-inset-bottom))}
+  footer{padding-bottom:calc(6rem + env(safe-area-inset-bottom))}
+  .music-title{max-width:160px}
 }
 @media(hover:none){
   .schedule-item:hover .sch-dot{background:var(--white);transform:none}
   .motif-tile:hover img,.strip-frame:hover img{transform:none}
   .palette-chip:hover .chip{transform:none}
   .rsvp-btn:hover{transform:none}
-  #music-player:hover{transform:none}
 }
 
 /* ── REDUCED MOTION ── */
@@ -510,16 +536,17 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 </head>
 <body>
 
-<!-- ══════════════ MUSIC (shown only when MUSIC_SRC is set) ══════════════ -->
-<button type="button" id="music-player" class="hidden" aria-label="Play or pause music">
-  <span class="play-btn" id="play-btn"><i class="fas fa-play" style="margin-left:2px"></i></span>
-  <span>
-    <span class="music-label" style="display:block">Our Song</span>
+<!-- ══════════════ MUSIC BAR (shown once MUSIC_SRC loads) ══════════════ -->
+<button type="button" id="music-player" class="hidden" aria-label="Play our song" aria-pressed="false">
+  <span class="play-btn" id="play-btn"><i class="fas fa-play" style="margin-left:2px" aria-hidden="true"></i></span>
+  <span class="music-text">
+    <span class="music-label">Our Song</span>
     <span class="music-title" id="music-title">—</span>
   </span>
   <span class="music-bars paused" id="music-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
 </button>
-<audio id="bg-music" loop preload="none"></audio>
+<p class="music-hint hidden" id="music-hint" aria-hidden="true">Tap anywhere for music ♪</p>
+<audio id="bg-music" loop preload="metadata"></audio>
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav id="sticky-nav" aria-label="Sections">
@@ -534,6 +561,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
       <a href="#dresscode" class="nav-link">Attire</a>
       <a href="#gifts" class="nav-link">Gifts</a>
       <a href="#venue" class="nav-link">Venue</a>
+      <a href="#baptism" class="nav-link">Baptism</a>
       <a href="#rsvp" class="nav-link">RSVP</a>
     </div>
     <button type="button" class="nav-hamburger" id="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu"><i class="fas fa-bars"></i></button>
@@ -547,7 +575,8 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
     <a href="#dresscode" class="nav-link">Attire</a>
     <a href="#gifts" class="nav-link">Gifts</a>
     <a href="#venue" class="nav-link">Venue</a>
-    <a href="#rsvp" class="nav-link">RSVP</a>
+    <a href="#baptism" class="nav-link">Baptism</a>
+      <a href="#rsvp" class="nav-link">RSVP</a>
   </div>
 </nav>
 
@@ -697,18 +726,10 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
       <div class="divider-ornament floating reveal-scale delay-2" aria-hidden="true">✦</div>
     </div>
 
-    <div class="entourage-tabs reveal-up delay-3" role="tablist" aria-label="Entourage">
-      <button type="button" class="etab" role="tab" id="t-sponsors" aria-controls="p-sponsors" aria-selected="true">Principal Sponsors</button>
-      <button type="button" class="etab" role="tab" id="t-party" aria-controls="p-party" aria-selected="false" tabindex="-1">Wedding Party</button>
-      <button type="button" class="etab" role="tab" id="t-rites" aria-controls="p-rites" aria-selected="false" tabindex="-1">Sponsors &amp; Roles</button>
-    </div>
-
-    <!-- Principal sponsors -->
-    <div class="entourage-panel" role="tabpanel" id="p-sponsors" aria-labelledby="t-sponsors">
+    <div class="entourage-list">
       <p class="group-label">Principal Sponsors</p>
       <div class="two-col sponsors-cols">
         <div>
-          <div class="col-head">Ninongs</div>
           <div class="ename">Mr. Ryan Lester Albaño</div>
           <div class="ename">Mr. Jhon Paul Reinante</div>
           <div class="ename">Mr. Ferdinand Jose Santos</div>
@@ -720,12 +741,11 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
           <div class="ename">Mr. Alnoor Osop</div>
           <div class="ename">Mr. Cleifford Pacatang</div>
           <div class="ename">Mr. Sandro Liu</div>
-          <div class="ename">Mr. Nonoy Saguin</div>
+          <div class="ename">Mr. Herminigildo Saguin</div>
           <div class="ename">Mr. Marlowe Manguray</div>
           <div class="ename">Mr. Hipolito Mayor</div>
         </div>
         <div>
-          <div class="col-head">Ninangs</div>
           <div class="ename">Dr. Joana Albaño</div>
           <div class="ename">Mrs. Anilou Reinante</div>
           <div class="ename">Mrs. Ma. Miljean Santos</div>
@@ -748,49 +768,13 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
           <div class="ename">Mrs. Luzminda Oriola</div>
         </div>
       </div>
-    </div>
 
-    <!-- Wedding party -->
-    <div class="entourage-panel" role="tabpanel" id="p-party" aria-labelledby="t-party" hidden>
+      <p class="group-label">Best Man &amp; Maid of Honor</p>
       <div class="honor-grid">
         <div class="honor-card"><div class="honor-role">Best Man</div><div class="honor-name">Ceejay Abila</div></div>
         <div class="honor-card"><div class="honor-role">Maid of Honor</div><div class="honor-name">Jay Marie Gonzaga</div></div>
       </div>
-      <div class="two-col" style="margin-top:2.2rem">
-        <div>
-          <div class="col-head">Groomsmen</div>
-          <div class="ename">Jacklord Gumaman</div>
-          <div class="ename">Jereicho Baterna</div>
-          <div class="ename">Harvey Nicole Manguray</div>
-          <div class="ename">Dosil Baterna</div>
-          <div class="ename">John Paul Rama</div>
-        </div>
-        <div>
-          <div class="col-head">Bridesmaids</div>
-          <div class="ename">Marielle Cabanban</div>
-          <div class="ename">KC Roscios</div>
-          <div class="ename">Jenny Lyn Rama</div>
-          <div class="ename">Marie Antoinette Manguray</div>
-          <div class="ename">Neslie Mayor</div>
-        </div>
-      </div>
-      <p class="group-label">Bearers</p>
-      <div class="role-grid">
-        <div class="role-card"><div class="honor-role">Ring Bearer</div><div class="ename">Ezekiel Togonon</div></div>
-        <div class="role-card"><div class="honor-role">Coin Bearer</div><div class="ename">James Roscios</div></div>
-        <div class="role-card"><div class="honor-role">Bible Bearer</div><div class="ename">Jepsy Lord Gumaman</div></div>
-      </div>
-      <p class="group-label">Flower Girls</p>
-      <div class="pill-row">
-        <span class="pill">Terryen Zaraquel Campos</span>
-        <span class="pill">Soffhia Keith Elnasin</span>
-        <span class="pill">Athena Baterna</span>
-        <span class="pill">Jazelle Roscios</span>
-      </div>
-    </div>
 
-    <!-- Secondary sponsors & other roles -->
-    <div class="entourage-panel" role="tabpanel" id="p-rites" aria-labelledby="t-rites" hidden>
       <p class="group-label">Secondary Sponsors</p>
       <div class="role-grid">
         <div class="role-card">
@@ -812,16 +796,55 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
           <div class="ename">Robert John Roscios</div>
         </div>
       </div>
+
+      <p class="group-label">Groomsmen &amp; Bridesmaids</p>
+      <div class="two-col">
+        <div>
+          <div class="col-head">Groomsmen</div>
+          <div class="ename">Jacklord Gumaman</div>
+          <div class="ename">Jereicho Baterna</div>
+          <div class="ename">Harvey Nicole Manguray</div>
+          <div class="ename">Dosil Baterna</div>
+          <div class="ename">John Paul Rama</div>
+          <div class="ename">Jhoncris Elnasin Abila</div>
+        </div>
+        <div>
+          <div class="col-head">Bridesmaids</div>
+          <div class="ename">Marielle Cabanban</div>
+          <div class="ename">KC Roscios</div>
+          <div class="ename">Jenny Lyn Rama</div>
+          <div class="ename">Marie Antoinette Manguray</div>
+          <div class="ename">Neslie Mayor</div>
+          <div class="ename">Kathryn Mae Mayor Solde</div>
+        </div>
+      </div>
+
+      <p class="group-label">Bearers</p>
+      <div class="role-grid">
+        <div class="role-card"><div class="honor-role">Ring Bearer</div><div class="ename">Ezekiel Togonon</div></div>
+        <div class="role-card"><div class="honor-role">Coin Bearer</div><div class="ename">James Roscios</div></div>
+        <div class="role-card"><div class="honor-role">Bible Bearer</div><div class="ename">Jepsy Lord Gumaman</div></div>
+      </div>
+
+      <p class="group-label">Flower Girls</p>
+      <div class="pill-row">
+        <span class="pill">Terreyn Zaraqael Campos</span>
+        <span class="pill">Soffhia Keith Elnasin</span>
+        <span class="pill">Athena Baterna</span>
+        <span class="pill">Jazelle Roscios</span>
+      </div>
+
       <p class="group-label">Liturgy</p>
       <dl class="roles-table">
         <div class="roles-row"><dt>First Reader</dt><dd>Ross Jackilou Togonon</dd></div>
-        <div class="roles-row"><dt>Second Reader</dt><dd>Ma. Stephanie Elnasin</dd></div>
-        <div class="roles-row"><dt>Psalmist</dt><dd>Chelsea Mayor</dd></div>
+        <div class="roles-row"><dt>Second Reader</dt><dd>Teresa Jane Campos</dd></div>
+        <div class="roles-row"><dt>Psalmist</dt><dd>Axl Rose Recamara</dd></div>
       </dl>
+
       <p class="group-label">Offerors</p>
       <dl class="roles-table">
-        <div class="roles-row"><dt>Candles</dt><dd>Brendith Mayor</dd></div>
-        <div class="roles-row"><dt>Host</dt><dd>Theresa Jane Campos</dd></div>
+        <div class="roles-row"><dt>Candles</dt><dd>Leah Elnasin Gumaman</dd></div>
+        <div class="roles-row"><dt>Host</dt><dd>Ma. Stephanie Elnasin</dd></div>
         <div class="roles-row"><dt>Fruits</dt><dd>Kyla Roscios</dd></div>
         <div class="roles-row"><dt>Wine</dt><dd>Jegger Mayor</dd></div>
       </dl>
@@ -961,6 +984,48 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   </div>
 </section>
 
+<!-- ══════════════ BAPTISM ══════════════ -->
+<section id="baptism">
+  <div class="section-inner">
+    <div class="section-head">
+      <p class="section-label reveal-up">A Blessing Shared</p>
+      <h2 class="section-title reveal-up delay-1">Her <em>Baptism</em></h2>
+      <div class="divider-ornament floating reveal-scale delay-2" aria-hidden="true">✦</div>
+    </div>
+    <div class="bap-card reveal-up delay-2">
+      <p class="bap-intro">As we begin a beautiful new chapter, united in love and bound by faith, we joyfully welcome our precious daughter into God’s loving embrace.</p>
+      <p class="bap-lead">Please join us for the baptism of our daughter</p>
+      <p class="bap-name">Thyrelle Loise</p>
+      <div class="bap-facts">
+        <div><div class="fact-k">Date</div><div class="fact-v pending">Pending</div></div>
+        <div><div class="fact-k">Time</div><div class="fact-v pending">Pending</div></div>
+        <div><div class="fact-k">Church</div><div class="fact-v pending">Pending</div></div>
+      </div>
+    </div>
+    <div class="bap-grid">
+      <div class="bap-box reveal-up delay-3">
+        <h3><i class="fas fa-gift" aria-hidden="true"></i>Gift Guide</h3>
+        <ul class="bap-list">
+          <li>Baby clothes, 3–6 months and up</li>
+          <li>Mustela products</li>
+          <li>Educational toys</li>
+          <li>Monetary gifts</li>
+        </ul>
+        <p class="bap-note">Just because we gave an idea doesn’t mean you’re obligated to give. Your presence is the most precious gift our baby will receive.</p>
+      </div>
+      <div class="bap-box reveal-up delay-4">
+        <h3><i class="fas fa-hand-holding-heart" aria-hidden="true"></i>Health Protocol</h3>
+        <p class="bap-note" style="margin:0 0 .8rem">Thank you for helping us keep our little one safe! To support Thyrelle’s developing immunity, we’d be grateful if you would:</p>
+        <ul class="bap-list">
+          <li>Avoid kissing Thyrelle</li>
+          <li>Clean your hands before touching her</li>
+          <li>Refrain from smoking or vaping</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════ RSVP ══════════════ -->
 <section id="rsvp">
   <div class="section-inner">
@@ -1026,8 +1091,8 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 var WEDDING_AT = '2026-10-28T14:00:00+08:00';
 
 /* Leave '' to hide the player. */
-var MUSIC_SRC = '';
-var MUSIC_TITLE = '';
+var MUSIC_SRC = 'assets/music/ill-be.m4a';
+var MUSIC_TITLE = 'I’ll Be · Edwin McCain';
 
 /* Leave empty to hide the gallery. type: 'portrait' | 'landscape' */
 var PHOTOS = [
@@ -1072,23 +1137,58 @@ function spawnPetals(wrap, count, colors){
 spawnPetals(document.getElementById('hero-petals'), 24, ['#C8B7A6', '#E4D9CD', '#F6F1EB', '#8FA3B6']);
 
 /* ── MUSIC ── */
-var audio = document.getElementById('bg-music');
-var player = document.getElementById('music-player');
-var isPlaying = false;
-function setPlaying(on){
-  isPlaying = on;
-  document.getElementById('play-btn').innerHTML = on ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play" style="margin-left:2px"></i>';
-  document.getElementById('music-bars').classList.toggle('paused', !on);
-}
-if (MUSIC_SRC) {
+(function(){
+  var audio = document.getElementById('bg-music');
+  var player = document.getElementById('music-player');
+  var hint = document.getElementById('music-hint');
+  var bars = document.getElementById('music-bars');
+  var btn = document.getElementById('play-btn');
+  if (!MUSIC_SRC) return;
+
+  var isPlaying = false, userPaused = false, pausedByHide = false;
+  function setPlaying(on){
+    isPlaying = on;
+    btn.innerHTML = on ? '<i class="fas fa-pause" aria-hidden="true"></i>' : '<i class="fas fa-play" style="margin-left:2px" aria-hidden="true"></i>';
+    bars.classList.toggle('paused', !on);
+    player.classList.toggle('playing', on);
+    player.setAttribute('aria-pressed', on);
+    player.setAttribute('aria-label', on ? 'Pause our song' : 'Play our song');
+  }
+  function dropHint(){ hint.classList.add('gone'); setTimeout(function(){ hint.remove(); }, 500); }
+  function play(){
+    return audio.play().then(function(){ setPlaying(true); dropHint(); stopListening(); }).catch(function(){});
+  }
+
   audio.src = MUSIC_SRC;
   document.getElementById('music-title').textContent = MUSIC_TITLE || 'Our Song';
   player.classList.remove('hidden');
-  player.addEventListener('click', function(){
-    if (isPlaying) { audio.pause(); setPlaying(false); }
-    else { audio.play().then(function(){ setPlaying(true); }).catch(function(){}); }
+  hint.classList.remove('hidden');
+  /* missing or unplayable file → hide the bar entirely */
+  audio.addEventListener('error', function(){ player.remove(); hint.remove(); stopListening(); });
+  audio.addEventListener('timeupdate', function(){
+    if (audio.duration) player.style.setProperty('--p', (audio.currentTime / audio.duration).toFixed(4));
   });
-}
+
+  player.addEventListener('click', function(){
+    if (isPlaying) { audio.pause(); setPlaying(false); userPaused = true; }
+    else { userPaused = false; play(); }
+  });
+
+  /* browsers only allow sound after a tap/click/key — start on the first one anywhere */
+  var GESTURES = ['click', 'touchend', 'keydown'];
+  function firstGesture(e){
+    if (userPaused || isPlaying || player.contains(e.target)) return;
+    play();
+  }
+  function stopListening(){ GESTURES.forEach(function(g){ document.removeEventListener(g, firstGesture, true); }); }
+  GESTURES.forEach(function(g){ document.addEventListener(g, firstGesture, true); });
+
+  /* pause while the tab/app is in the background, resume on return */
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden && isPlaying) { audio.pause(); setPlaying(false); pausedByHide = true; }
+    else if (!document.hidden && pausedByHide && !userPaused) { pausedByHide = false; play(); }
+  });
+})();
 
 /* ── NAV ── */
 (function(){
@@ -1115,28 +1215,6 @@ if (MUSIC_SRC) {
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach(function(s){ spy.observe(s); });
-})();
-
-/* ── ENTOURAGE TABS ── */
-(function(){
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.etab'));
-  function select(tab){
-    tabs.forEach(function(t){
-      var on = t === tab;
-      t.setAttribute('aria-selected', on);
-      t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-  }
-  tabs.forEach(function(t, i){
-    t.addEventListener('click', function(){ select(t); });
-    t.addEventListener('keydown', function(e){
-      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-      if (!d) return;
-      var next = tabs[(i + d + tabs.length) % tabs.length];
-      select(next); next.focus();
-    });
-  });
 })();
 
 /* ── COUNTDOWN ── */
