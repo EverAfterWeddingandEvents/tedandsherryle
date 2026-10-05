@@ -19,11 +19,8 @@ Plain `--dusty` on ivory is 4.4:1 — fine for large type, not for small caps; u
 `--ink-muted` `#5E6878` is 4.9:1 on ivory.
 
 ## Motif section
-Five arch frames cut from the dress-code illustration, following the lineup: guest couple · barong ·
-the two dusty-blue gowns · barong · guest couple. Every crop spans the same rows (y 210–1260 of the
-2400×1792 source), and each tile carries `--r` = its width/height, used as both `aspect-ratio` and
-`flex-grow` — so all arches share one height and all eight figures stay at one scale. Alternate
-arches drop 2.2rem. All five palette colours sit underneath.
+Heading, one intro line, and the five palette chips (navy, dusty blue, sand beige, ivory, soft white).
+The arch photo row was removed on 2026-10-06; the outfit imagery now lives in the Dress Code cards.
 
 ## Type
 Great Vibes (script names/monogram) · Playfair Display (titles, italic accents) · Cinzel (letter-spaced

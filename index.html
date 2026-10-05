@@ -320,19 +320,8 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
 .roles-row dt{font-family:var(--font-caps);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dusty-deep);padding-top:.25rem}
 .roles-row dd{font-size:1.05rem;color:var(--navy);text-align:right}
 
-/* ── MOTIF — five photos cut from motif.png, arch frames ── */
+/* ── MOTIF ── */
 #motif{background:var(--white)}
-.motif-photos{display:flex;justify-content:center;align-items:flex-start;gap:.9rem;margin:2.6rem auto 0;max-width:820px}
-/* --r = the crop's width/height; flex-grow by --r keeps every arch the same height,
-   so all eight figures stay at one scale */
-.motif-tile{
-  flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);overflow:hidden;margin:0;
-  border-radius:999px 999px 6px 6px;border:4px solid var(--white);
-  box-shadow:0 0 0 1px var(--sand-light),0 10px 28px var(--shadow-n);background:var(--ivory)
-}
-.motif-tile:nth-child(even){margin-top:2.2rem}
-.motif-tile img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .8s ease}
-.motif-tile:hover img{transform:scale(1.05)}
 .palette-chip .chip.bordered{box-shadow:0 4px 12px rgba(0,0,0,.1),inset 0 0 0 1px var(--sand-light)}
 
 /* ── DRESS CODE ── */
@@ -352,6 +341,7 @@ section{padding:5.5rem 1.5rem;scroll-margin-top:52px}
 .dress-who{display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--font-caps);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--navy)}
 .dress-who i{color:var(--gold)}
 .dress-what{font-size:1.08rem;color:var(--ink-soft);margin:.35rem 0 .7rem;line-height:1.5}
+.dress-img{display:block;width:auto;max-width:100%;max-height:270px;height:auto;margin:.2rem auto 1rem;border-radius:12px;background:var(--ivory)}
 .swatches{display:flex;justify-content:center;gap:.5rem}
 .swatch{width:26px;height:26px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.18),inset 0 0 0 2px rgba(255,255,255,.5)}
 .dress-note{
@@ -466,9 +456,6 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
   .invite-facts{grid-template-columns:1fr;gap:.9rem}
   .invite-facts .sep{width:40px;height:1px;margin:0 auto}
   .dress-content{grid-template-columns:1fr}
-  .motif-photos{gap:.45rem}
-  .motif-tile{border-width:3px}
-  .motif-tile:nth-child(even){margin-top:1.4rem}
   .palette-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
   .palette-chip .chip{width:46px;height:46px}
   .palette-chip span{font-size:.5rem;letter-spacing:.12em;display:block;line-height:1.4}
@@ -520,7 +507,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
 }
 @media(hover:none){
   .schedule-item:hover .sch-dot{background:var(--white);transform:none}
-  .motif-tile:hover img,.strip-frame:hover img{transform:none}
+  .strip-frame:hover img{transform:none}
   .palette-chip:hover .chip{transform:none}
   .rsvp-btn:hover{transform:none}
 }
@@ -748,7 +735,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
           <div class="ename">Mr. Hipolito Mayor</div>
         </div>
         <div>
-          <div class="ename">Dr. Joana Albaño</div>
+          <div class="ename">Dr. Joanna Albaño</div>
           <div class="ename">Mrs. Anilou Reinante</div>
           <div class="ename">Mrs. Ma. Miljean Santos</div>
           <div class="ename">Mrs. Lyn Carpio</div>
@@ -863,13 +850,6 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
       <div class="divider-ornament floating reveal-scale delay-2" aria-hidden="true">✦</div>
       <p class="section-lede reveal-up delay-2">Navy and dusty blue, warmed with sand beige and softened by ivory and white — the palette of our day.</p>
     </div>
-    <div class="motif-photos">
-      <figure class="motif-tile reveal-up delay-1" style="--r:.524"><img src="assets/img/arch-1-guests.jpg" alt="Guests: a lady in a sand beige cocktail dress and a gentleman in a dusty blue long-sleeve shirt" loading="lazy"></figure>
-      <figure class="motif-tile reveal-up delay-2" style="--r:.305"><img src="assets/img/arch-2-barong.jpg" alt="Principal sponsor in a barong and black slacks" loading="lazy"></figure>
-      <figure class="motif-tile reveal-up delay-3" style="--r:.538"><img src="assets/img/arch-3-gowns.jpg" alt="Two principal sponsors in floor-length dusty blue gowns" loading="lazy"></figure>
-      <figure class="motif-tile reveal-up delay-4" style="--r:.305"><img src="assets/img/arch-4-barong.jpg" alt="Principal sponsor in a barong and black slacks" loading="lazy"></figure>
-      <figure class="motif-tile reveal-up delay-5" style="--r:.5"><img src="assets/img/arch-5-guests.jpg" alt="Guests: a lady in a navy cocktail dress and a gentleman in a sand beige polo" loading="lazy"></figure>
-    </div>
     <div class="palette-strip reveal-up delay-2" aria-label="Wedding colour palette">
       <div class="palette-chip"><div class="chip" style="background:#1A2A44"></div><span>Navy Blue</span></div>
       <div class="palette-chip"><div class="chip" style="background:#5A728A"></div><span>Dusty Blue</span></div>
@@ -894,11 +874,13 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
         <div class="dress-for">For our</div>
         <div class="dress-title">Principal Sponsors</div>
         <div class="dress-row">
+          <img class="dress-img" src="assets/img/dc-ninang.jpg" width="630" height="425" alt="Three floor-length formal gowns in dusty blue" loading="lazy">
           <div class="dress-who"><i class="fas fa-person-dress" aria-hidden="true"></i> Ladies</div>
           <p class="dress-what">Formal long gown in the shade of dusty blue</p>
           <div class="swatches"><span class="swatch" style="background:#5A728A" title="Dusty Blue"></span></div>
         </div>
         <div class="dress-row">
+          <img class="dress-img" src="assets/img/dc-ninong.jpg" width="415" height="427" alt="Two embroidered barong tagalog shirts with black slacks" loading="lazy">
           <div class="dress-who"><i class="fas fa-user-tie" aria-hidden="true"></i> Gentlemen</div>
           <p class="dress-what">Barong and black slacks</p>
           <div class="swatches">
@@ -912,6 +894,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
         <div class="dress-for">For our</div>
         <div class="dress-title">Guests</div>
         <div class="dress-row">
+          <img class="dress-img" src="assets/img/dc-ladies.jpg" width="490" height="404" alt="Three cocktail dresses in sand beige, dusty blue and navy blue" loading="lazy">
           <div class="dress-who"><i class="fas fa-person-dress" aria-hidden="true"></i> Ladies</div>
           <p class="dress-what">Cocktail dress in shades of sand beige, dusty blue, or navy blue</p>
           <div class="swatches">
@@ -921,6 +904,7 @@ footer{background:var(--navy-deep);color:var(--white);text-align:center;padding:
           </div>
         </div>
         <div class="dress-row">
+          <img class="dress-img" src="assets/img/dc-gents.jpg" width="545" height="404" alt="A dusty blue long-sleeve shirt, a sand beige polo, and a navy long-sleeve shirt with trousers" loading="lazy">
           <div class="dress-who"><i class="fas fa-user-tie" aria-hidden="true"></i> Gentlemen</div>
           <p class="dress-what">Long sleeves or polo in shades of sand beige, dusty blue, or navy blue</p>
           <div class="swatches">

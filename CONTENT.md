@@ -18,7 +18,7 @@ grep -n "Pending\|pending" index.html
 - Order of the day — 1:30 PM arrival · 2:00 PM ceremony · 5:00 PM cocktails · 5:30 PM programme · 6:30 PM dinner · 8:00 PM party (countdown targets 2:00 PM)
 - **Baptism** of their daughter Thyrelle Loise — intro, gift guide, health protocol
 - Gift note — **Option 1** (the highlighted one)
-- **Wedding Motif** section — 5 arches cut from the Gemini dress-code illustration (`assets/img/arch-*.jpg`) + all 5 palette colours
+- **Wedding Motif** section — heading, intro line and all 5 palette colours
 
 ## Still needed from the couple
 | Item | Where it goes | Current state |
@@ -45,7 +45,8 @@ grep -n "Pending\|pending" index.html
 Until then the form shows success but **saves nothing** (console warns).
 Max seats per reply is 2 (form + `CONFIG.MAX_SEATS`).
 
-## Dress-code illustration
-Gemini illustration (`image.jpeg`) is used **only** in the Wedding
-Motif arches (`assets/img/arch-*.jpg`). It was removed from the Dress Code section to avoid showing
-it twice. To regenerate the crops, see THEME.md → Motif section.
+## Dress-code outfit chart
+`image.png` (Gemini, 1448×1086) is cut into four crops shown at the top of each dress-code row:
+`assets/img/dc-ninang.jpg`, `dc-ninong.jpg`, `dc-ladies.jpg`, `dc-gents.jpg`. The labels printed in
+the source are left out — the cards carry them as text. The source background is exactly `--ivory`,
+so the crops sit in ivory panels without a seam.
