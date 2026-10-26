@@ -15,7 +15,7 @@ grep -n "Pending\|pending" index.html
 - Attire (principal sponsors + guests) and palette note — verbatim
 - Full entourage: principal sponsors, best man / MOH, groomsmen, bridesmaids, bearers,
   flower girls, candle / veil / cord sponsors, readers, psalmist, offerors
-- Order of the day — 1:30 PM arrival · 2:00 PM ceremony · 5:00 PM cocktails · 5:30 PM programme · 6:30 PM dinner · 8:00 PM party (countdown targets 2:00 PM)
+- Order of the day — 1:15 PM arrival · 2:00 PM ceremony · 5:00 PM cocktails · 5:30 PM programme · 6:30 PM dinner · 8:00 PM party (countdown targets 2:00 PM)
 - **Baptism** of their daughter Thyrelle Loise — intro, gift guide, health protocol
 - Gift note — **Option 1** (the highlighted one)
 - **Wedding Motif** section — heading, intro line and all 5 palette colours
@@ -26,7 +26,7 @@ grep -n "Pending\|pending" index.html
 | RSVP deadline | RSVP intro | "(date pending)" |
 | Parents of the bride & groom | entourage (add a block) | not shown |
 | Officiating priest | entourage (optional) | not shown |
-| Photos | `PHOTOS` array + `assets/photos/` | gallery hidden |
+| Photos | `PHOTOS` array + `assets/gallery/` (web-sized, 1600px) | 10 photos |
 | Music file | `MUSIC_SRC` + `assets/music/` | title set to "I’ll Be" — Edwin McCain (violin instrumental); player hidden until the file is added |
 | Baptism date, time, church | `#baptism` facts | "Pending" |
 | Bible verse | invitation card | **placeholder** — 1 Cor 13:13, confirm or replace |
